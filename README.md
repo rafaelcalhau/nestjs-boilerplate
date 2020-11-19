@@ -36,3 +36,6 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## API documentation
+Swagger is integrated and running at http://localhost:3000/explore/
