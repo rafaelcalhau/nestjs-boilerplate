@@ -1,0 +1,39 @@
+version: '3'
+services:
+  mysql:
+    container_name: nestjs-boilerplate-mysql
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    volumes:
+    - ./docker/sql:/docker-entrypoint-initdb.d
+    - ./docker/files:/tmp/files
+    environment:
+      # MYSQL_DATABASE: app_production
+      # MYSQL_USER: root
+      # MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+  phpmyadmin:
+    container_name: nestjs-boilerplate-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - '8080:80'
+    depends_on:
+      - mysql
+  api:
+    container_name: nestjs-boilerplate-api
+    build:
+      context: .
+      dockerfile: .Dockerfile
+    depends_on:
+      - mysql
+    image: rafaelcalhau/nestjs-boilerplate
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./:/usr/app
